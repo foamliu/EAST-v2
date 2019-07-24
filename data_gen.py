@@ -159,4 +159,4 @@ if __name__ == "__main__":
     from coco_text import COCO_Text
 
     coco = COCO_Text('data/train/COCO_Text.json')
-    print(coco.train)
+    print(coco.info())
