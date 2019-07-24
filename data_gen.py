@@ -156,52 +156,7 @@ class EastDataset(Dataset):
 
 
 if __name__ == "__main__":
-    import random
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as Patches
+    from coco_text import COCO_Text
 
-    dataset = EastDataset('test')
-    length = len(dataset)
-    index = random.randint(0, length - 1)
-    print('index: ' + str(index))
-
-    im = dataset[index][0]
-    score_map = dataset[index][1][::, ::, 0]
-    geo_map = dataset[index][2]
-    training_mask = dataset[index][3]
-    text_polys = dataset[index][4]
-
-    fig, axs = plt.subplots(3, 2, figsize=(20, 30))
-
-    axs[0, 0].imshow(im[..., ::-1])
-    axs[0, 0].set_xticks([])
-    axs[0, 0].set_yticks([])
-    for poly in text_polys:
-        poly_h = min(abs(poly[3, 1] - poly[0, 1]), abs(poly[2, 1] - poly[1, 1]))
-        poly_w = min(abs(poly[1, 0] - poly[0, 0]), abs(poly[2, 0] - poly[3, 0]))
-        axs[0, 0].add_artist(Patches.Polygon(
-            poly, facecolor='none', edgecolor='green', linewidth=2, linestyle='-', fill=True))
-        axs[0, 0].text(poly[0, 0], poly[0, 1], '{:.0f}-{:.0f}'.format(poly_h, poly_w), color='purple')
-
-    print(score_map.shape)
-    print(np.max(score_map))
-    print(np.min(score_map))
-
-    axs[0, 1].imshow(score_map)
-    axs[0, 1].set_xticks([])
-    axs[0, 1].set_yticks([])
-    axs[1, 0].imshow(geo_map[::, ::, 0])
-    axs[1, 0].set_xticks([])
-    axs[1, 0].set_yticks([])
-    axs[1, 1].imshow(geo_map[::, ::, 1])
-    axs[1, 1].set_xticks([])
-    axs[1, 1].set_yticks([])
-    axs[2, 0].imshow(geo_map[::, ::, 2])
-    axs[2, 0].set_xticks([])
-    axs[2, 0].set_yticks([])
-    axs[2, 1].imshow(training_mask[::, ::, 0])
-    axs[2, 1].set_xticks([])
-    axs[2, 1].set_yticks([])
-    plt.tight_layout()
-    plt.show()
-    plt.close()
+    coco = COCO_Text('data/train/COCO_Text.json')
+    print(coco.train)
