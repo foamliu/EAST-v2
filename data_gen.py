@@ -62,7 +62,7 @@ def load_annoataion(coco, image_id):
     text_polys = []
     text_tags = []
     polygons = [coco.anns[key]['polygon'] for key in coco.anns.keys() if coco.anns[key]['image_id'] == image_id]
-    print(len(polygons))
+
     for poly in polygons:
         x1, y1, x2, y2, x3, y3, x4, y4 = tuple(poly)
         text_polys.append([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
