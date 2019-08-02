@@ -37,16 +37,21 @@ Most codes are ported from [argman/EAST](https://github.com/argman/EAST) (the Te
 
 ## DataSet
 
-Model is trained & tested on [ICDAR 2015](http://rrc.cvc.uab.es/?ch=4&com=downloads). Please download following 4 files then put them under "data" folder:
-- ch4_training_images.zip
-- ch4_training_localization_transcription_gt.zip
-- ch4_test_images.zip
-- Challenge4_Test_Task1_GT.zip
+Model is trained on COCO-Text & tested on ICDAR 2015. 
 
 ### MSCOCO
 Go to [MSCOCO](http://cocodataset.org/#download) to download:
-
 - [2014 Train images](http://images.cocodataset.org/zips/train2014.zip)
+
+### COCO-Text
+Go to [COCO-Text](https://vision.cornell.edu/se3/coco-text-2/) to download:
+- [COCO-Text annotations 2017 v1.4](https://vision.cornell.edu/se3/wp-content/uploads/2019/05/COCO_Text.zip)
+
+### ICDAR 2015
+Go to [ICDAR 2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) to download:
+- ch4_test_images.zip
+- Challenge4_Test_Task1_GT.zip
+
 
 ## Dependency
 
