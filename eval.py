@@ -11,8 +11,8 @@ from torchvision import transforms
 from tqdm import tqdm
 
 import lanms
-from config import device, result_root
-from data_gen import data_transforms, test_data_path
+from config import device, result_root, test_data_path
+from data_gen import data_transforms
 from icdar import restore_rectangle, polygon_area
 
 
