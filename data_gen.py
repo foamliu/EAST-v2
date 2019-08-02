@@ -146,6 +146,7 @@ def get_data_record(coco, image_id, transformer):
 class CocoTextDataset(Dataset):
     def __init__(self, split):
 
+        print('loading {} annotation...'.format(split))
         self.coco = COCO_Text(annotation_file)
 
         if split == 'train':
