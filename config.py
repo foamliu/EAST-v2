@@ -4,6 +4,9 @@ import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # sets device for model and PyTorch tensors
 
 input_size = 512
+training_data_path = 'data/train/'  # training dataset to use
+test_data_path = 'data/test/'
+result_root = 'data/result/'
 annotation_file = 'data/COCO_Text.json'
 train_image_folder = 'data/train2014'
 max_image_large_side = 1280  # max image size of training
