@@ -1,3 +1,5 @@
+import os
+
 import cv2 as cv
 import numpy as np
 import torch
@@ -5,7 +7,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 
 from coco_text import COCO_Text
-from config import input_size, annotation_file, background_ratio, random_scale, geometry
+from config import input_size, annotation_file, background_ratio, random_scale, geometry, train_image_folder
 from icdar import load_annoataion, check_and_validate_polys, crop_area, generate_rbox
 
 # Data augmentation and normalization for training
@@ -73,7 +75,7 @@ def load_annoataion(coco, image_id):
 def get_data_record(coco, image_id, transformer):
     img = coco.imgs[image_id]
     filename = img['file_name']
-    im_fn = image_list[i]
+    im_fn = os.path.join(train_image_folder, filename)
     im = cv.imread(im_fn)
     # print im_fn
     h, w, _ = im.shape
