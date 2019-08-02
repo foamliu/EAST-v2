@@ -147,14 +147,11 @@ class CocoTextDataset(Dataset):
         print('loading {} annotation...'.format(split))
         self.coco = COCO_Text(annotation_file)
 
-        if split == 'train':
-            self.image_ids = self.coco.train
-        elif split == 'val':
-            self.image_ids = self.coco.val
-        else:
-            self.image_ids = self.coco.test
+        train_ids = set()
 
-        self.transformer = data_transforms[split]
+        for key in self.coco.anns.keys():
+            train_ids.add(self.coco.anns[key]['image_id'])
+        self.image_ids = list(train_ids)
 
     def __getitem__(self, i):
         idx = i
