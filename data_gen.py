@@ -161,12 +161,12 @@ class CocoTextDataset(Dataset):
         idx = i
 
         while True:
-            try:
+            # try:
                 image_id = self.image_ids[idx]
                 return get_data_record(self.coco, image_id, self.transformer)
-            except TypeError:
-                import random
-                idx = random.randint(0, len(self.image_ids) - 1)
+            # except TypeError:
+            #     import random
+            #     idx = random.randint(0, len(self.image_ids) - 1)
 
     def __len__(self):
         return len(self.image_ids)
