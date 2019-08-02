@@ -4,7 +4,7 @@ from tensorboardX import SummaryWriter
 from torch import nn
 
 from config import device, grad_clip, print_freq, num_workers
-from data_gen import EastDataset, collate_fn
+from data_gen import CocoTextDataset, collate_fn
 from eval import predict
 from loss import LossFunc
 from models import EastModel
@@ -50,12 +50,9 @@ def train_net(args):
     criterion = LossFunc()
 
     # Custom dataloaders
-    train_dataset = EastDataset('train')
+    train_dataset = CocoTextDataset('train')
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size,
                                                shuffle=True, num_workers=num_workers, collate_fn=collate_fn)
-    # test_dataset = EastDataset('test')
-    # test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=args.batch_size_per_gpu * args.num_gpus,
-    #                                           shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):

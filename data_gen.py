@@ -143,7 +143,7 @@ def get_data_record(coco, image_id, transformer):
     return im, score_map, geo_map, training_mask  # , text_polys
 
 
-class EastDataset(Dataset):
+class CocoTextDataset(Dataset):
     def __init__(self, split):
 
         self.coco = COCO_Text(annotation_file)
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import matplotlib.patches as Patches
 
-    dataset = EastDataset('test')
+    dataset = CocoTextDataset('test')
     length = len(dataset)
     index = random.randint(0, length - 1)
     print('index: ' + str(index))
