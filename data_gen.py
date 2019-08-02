@@ -153,6 +153,8 @@ class CocoTextDataset(Dataset):
             train_ids.add(self.coco.anns[key]['image_id'])
         self.image_ids = list(train_ids)
 
+        self.transformer = data_transforms['train']
+
     def __getitem__(self, i):
         idx = i
 
