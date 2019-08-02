@@ -62,8 +62,6 @@ def load_annoataion(coco, image_id):
     text_polys = []
     text_tags = []
     polygons = [coco.anns[key]['polygon'] for key in coco.anns.keys() if coco.anns[key]['image_id'] == image_id]
-    if len(polygons) == 0:
-        return np.array(text_polys, dtype=np.float32)
 
     for poly in polygons:
         x1, y1, x2, y2, x3, y3, x4, y4 = tuple(poly)
@@ -163,11 +161,11 @@ class CocoTextDataset(Dataset):
 
         while True:
             # try:
-                image_id = self.image_ids[idx]
-                return get_data_record(self.coco, image_id, self.transformer)
-            # except TypeError:
-            #     import random
-            #     idx = random.randint(0, len(self.image_ids) - 1)
+            image_id = self.image_ids[idx]
+            return get_data_record(self.coco, image_id, self.transformer)
+        # except TypeError:
+        #     import random
+        #     idx = random.randint(0, len(self.image_ids) - 1)
 
     def __len__(self):
         return len(self.image_ids)
