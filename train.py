@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 import torch
 from tensorboardX import SummaryWriter
@@ -11,6 +13,8 @@ from models import EastModel
 from script import default_evaluation_params, evaluate_method
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, get_logger, get_learning_rate, \
     adjust_learning_rate
+
+warnings.simplefilter('ignore', np.RankWarning)
 
 
 def train_net(args):
