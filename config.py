@@ -15,9 +15,9 @@ random_scale = np.array([0.5, 1, 2.0, 3.0])
 epsilon = 1e-8
 
 train_ratio = 0.9
-num_samples = 1000
-num_train = int(num_samples * 0.9)
-num_valid = num_samples - num_train
+num_train = 43686
+num_val = 10000
+num_test = 10000
 
 # Training parameters
 num_workers = 4  # for data-loading

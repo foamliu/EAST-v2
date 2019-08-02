@@ -40,13 +40,14 @@ Most codes are ported from [argman/EAST](https://github.com/argman/EAST) (the Te
 
 Model is trained on COCO-Text & tested on ICDAR 2015. 
 
-### MSCOCO
-Go to [MSCOCO](http://cocodataset.org/#download) to download:
-- [2014 Train images](http://images.cocodataset.org/zips/train2014.zip)
-
 ### COCO-Text
+63,686 images, 145,859 text instances (training: 43,686/118,309 training, validation: 10,000/27,550 validation, test: 10,000/no public annotations)
+
 Go to [COCO-Text](https://vision.cornell.edu/se3/coco-text-2/) to download:
 - [COCO-Text annotations 2017 v1.4](https://vision.cornell.edu/se3/wp-content/uploads/2019/05/COCO_Text.zip)
+
+Go to [MSCOCO](http://cocodataset.org/#download) to download:
+- [2014 Train images](http://images.cocodataset.org/zips/train2014.zip)
 
 ### ICDAR 2015
 Go to [ICDAR 2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) to download:
