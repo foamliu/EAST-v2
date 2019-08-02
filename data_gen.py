@@ -150,8 +150,10 @@ class EastDataset(Dataset):
 
         if split == 'train':
             self.image_ids = self.coco.train
-        else:
+        elif split == 'val':
             self.image_ids = self.coco.val
+        else:
+            self.image_ids = self.coco.test
 
         self.transformer = data_transforms[split]
 
