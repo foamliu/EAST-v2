@@ -61,7 +61,7 @@ def collate_fn(batch):
 def load_annoataion(coco, image_id):
     text_polys = []
     text_tags = []
-    polygons = [ann['polygon'] for ann in coco.anns if ann['image_id'] == image_id]
+    polygons = [coco.anns[key]['polygon'] for key in coco.anns.keys() if coco.anns[key]['image_id'] == image_id]
     if len(polygons) == 0:
         return np.array(text_polys, dtype=np.float32)
 
