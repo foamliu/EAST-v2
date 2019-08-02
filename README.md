@@ -18,11 +18,11 @@ This is a PyTorch re-implementation of EAST: An Efficient and Accurate Scene Tex
 
 |Model|Recall|Precision|Hmean|Download|
 |---|---|---|---|---|
-|EAST in PyTorch|65.86%|81.72%|72.94%|[Link](https://github.com/foamliu/EAST/releases/download/v1.0/BEST_checkpoint.tar)
+|PyTorch re-implementation of EAST|74.48%|90.26%|81.61%|[Link](https://github.com/foamliu/EAST/releases/download/v1.0/BEST_checkpoint.tar)
 
 ![image](https://github.com/foamliu/EAST/raw/master/images/Results_IoU.png)
 
-[Link](https://rrc.cvc.uab.es/?ch=4&com=evaluation&view=method_info&task=1&m=60628)
+[Link](https://rrc.cvc.uab.es/?ch=4&com=evaluation&view=method_info&task=1&m=61493)
 
 ### Offline evaluation
 
@@ -36,16 +36,17 @@ $ ./eval.sh
 Most codes are ported from [argman/EAST](https://github.com/argman/EAST) (the Tensorflow re-implementation).
 
 ## DataSet
-Model is trained on [COCO_Text](https://bgshih.github.io/cocotext/). 
-Please download following 2 files then put them under "data" folder:
-- ch4_test_images.zip
-- COCO_Text.zip
 
-Model is tested on [ICDAR 2015](http://rrc.cvc.uab.es/?ch=4&com=downloads). 
-Please download following 2 files then put them under "data" folder:
+Model is trained & tested on [ICDAR 2015](http://rrc.cvc.uab.es/?ch=4&com=downloads). Please download following 4 files then put them under "data" folder:
+- ch4_training_images.zip
+- ch4_training_localization_transcription_gt.zip
 - ch4_test_images.zip
 - Challenge4_Test_Task1_GT.zip
 
+### MSCOCO
+Go to [MSCOCO](http://cocodataset.org/#download) to download:
+
+- [2014 Train images](http://images.cocodataset.org/zips/train2014.zip)
 
 ## Dependency
 

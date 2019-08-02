@@ -1,13 +1,12 @@
-import os
-
 import cv2 as cv
 import numpy as np
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from config import input_size, training_data_path, test_data_path, background_ratio, random_scale, geometry
-from icdar import load_annoataion, get_images, check_and_validate_polys, crop_area, generate_rbox
+from coco_text import COCO_Text
+from config import input_size, annotation_file, background_ratio, random_scale, geometry
+from icdar import load_annoataion, check_and_validate_polys, crop_area, generate_rbox
 
 # Data augmentation and normalization for training
 # Just normalization for validation
@@ -57,16 +56,29 @@ def collate_fn(batch):
     return images, score_maps, geo_maps, training_masks
 
 
-def get_data_record(image_list, i, data_path, transformer):
+def load_annoataion(coco, image_id):
+    text_polys = []
+    text_tags = []
+    polygons = [ann['polygon'] for ann in coco.anns if ann['image_id'] == image_id]
+    if len(polygons) == 0:
+        return np.array(text_polys, dtype=np.float32)
+
+    for poly in polygons:
+        x1, y1, x2, y2, x3, y3, x4, y4 = tuple(poly)
+        text_polys.append([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
+        text_tags.append(False)
+    return np.array(text_polys, dtype=np.float32), np.array(text_tags, dtype=np.bool)
+
+
+def get_data_record(coco, image_id, transformer):
+    img = coco.imgs[image_id]
+    filename = img['file_name']
     im_fn = image_list[i]
     im = cv.imread(im_fn)
     # print im_fn
     h, w, _ = im.shape
-    txt_fn = im_fn.replace(data_path, '')
-    txt_fn = os.path.join(data_path, 'gt_' + txt_fn.split('.')[0] + '.txt')
-    assert (os.path.exists(txt_fn))
 
-    text_polys, text_tags = load_annoataion(txt_fn)
+    text_polys, text_tags = load_annoataion(coco, image_id)
 
     text_polys, text_tags = check_and_validate_polys(text_polys, text_tags, (h, w))
     # if text_polys.shape[0] == 0:
@@ -131,32 +143,78 @@ def get_data_record(image_list, i, data_path, transformer):
 
 class EastDataset(Dataset):
     def __init__(self, split):
+
+        self.coco = COCO_Text(annotation_file)
+
         if split == 'train':
-            self.data_path = training_data_path
+            self.image_ids = self.coco.train
         else:
-            self.data_path = test_data_path
+            self.image_ids = self.coco.val
 
-        self.image_list = np.array(get_images(self.data_path))
         self.transformer = data_transforms[split]
-
-        print('{} {} images in {}'.format(
-            self.image_list.shape[0], split, self.data_path))
 
     def __getitem__(self, i):
         idx = i
+
         while True:
             try:
-                return get_data_record(self.image_list, idx, self.data_path, self.transformer)
+                image_id = self.image_ids[idx]
+                return get_data_record(self.coco, image_id, self.transformer)
             except TypeError:
                 import random
-                idx = random.randint(0, len(self.image_list) - 1)
+                idx = random.randint(0, len(self.image_ids) - 1)
 
     def __len__(self):
-        return len(self.image_list)
+        return len(self.image_ids)
 
 
 if __name__ == "__main__":
-    from coco_text import COCO_Text
+    import random
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as Patches
 
-    coco = COCO_Text('data/train/COCO_Text.json')
-    print(coco.info())
+    dataset = EastDataset('test')
+    length = len(dataset)
+    index = random.randint(0, length - 1)
+    print('index: ' + str(index))
+
+    im = dataset[index][0]
+    score_map = dataset[index][1][::, ::, 0]
+    geo_map = dataset[index][2]
+    training_mask = dataset[index][3]
+    text_polys = dataset[index][4]
+
+    fig, axs = plt.subplots(3, 2, figsize=(20, 30))
+
+    axs[0, 0].imshow(im[..., ::-1])
+    axs[0, 0].set_xticks([])
+    axs[0, 0].set_yticks([])
+    for poly in text_polys:
+        poly_h = min(abs(poly[3, 1] - poly[0, 1]), abs(poly[2, 1] - poly[1, 1]))
+        poly_w = min(abs(poly[1, 0] - poly[0, 0]), abs(poly[2, 0] - poly[3, 0]))
+        axs[0, 0].add_artist(Patches.Polygon(
+            poly, facecolor='none', edgecolor='green', linewidth=2, linestyle='-', fill=True))
+        axs[0, 0].text(poly[0, 0], poly[0, 1], '{:.0f}-{:.0f}'.format(poly_h, poly_w), color='purple')
+
+    print(score_map.shape)
+    print(np.max(score_map))
+    print(np.min(score_map))
+
+    axs[0, 1].imshow(score_map)
+    axs[0, 1].set_xticks([])
+    axs[0, 1].set_yticks([])
+    axs[1, 0].imshow(geo_map[::, ::, 0])
+    axs[1, 0].set_xticks([])
+    axs[1, 0].set_yticks([])
+    axs[1, 1].imshow(geo_map[::, ::, 1])
+    axs[1, 1].set_xticks([])
+    axs[1, 1].set_yticks([])
+    axs[2, 0].imshow(geo_map[::, ::, 2])
+    axs[2, 0].set_xticks([])
+    axs[2, 0].set_yticks([])
+    axs[2, 1].imshow(training_mask[::, ::, 0])
+    axs[2, 1].set_xticks([])
+    axs[2, 1].set_yticks([])
+    plt.tight_layout()
+    plt.show()
+    plt.close()
